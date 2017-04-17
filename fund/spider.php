@@ -34,7 +34,7 @@ $ttGzUrl = "http://fundgz.1234567.com.cn/js/%s.js";
 
 $gzVal = include ROOT_DIR ."/guzhi.php";
 
-//$str = sprintf("%s\t%s\t%s\t\t%s\t%s\t%s\t%s\n", mb_substr("基金", 0, 4, "utf-8"), "日期", "时间", "腾讯估值", "腾讯涨幅", "天天估值", "天天涨幅");
+//$str = sprintf("%s\t%s %s\t%s  %s  %s  %s\n", mb_substr("基金", 0, 4, "utf-8"), "日期", "时间", "腾讯估值", "腾讯涨幅", "天天估值", "天天涨幅");
 //$str = "";
 foreach ($funds as $k => $v)
 {
@@ -65,10 +65,10 @@ foreach ($funds as $k => $v)
 	$ttNewRate = floatval($ttData['gszzl']);
 	$ttNewTime = date("H:i", strtotime($ttData['gztime']));
 
+	$txNewTime = substr($txNewTime, 0, 2) . ':' . substr($txNewTime, 2, 4);
+	$date = substr($date, 5);
 
-
-
-	$str .= sprintf("%s\t%s\t%s\t腾讯估值：%.4f\t腾讯涨幅：%+.2F\t\t天天估值：%.4f\t天天涨幅：%+0.2F\n", mb_substr($v,0, 6, "utf-8"), $date, $txNewTime, $txNewVal, $txRate, $ttNewVal, $ttNewRate);
+	$str .= sprintf("%s\t%s %s   腾 %.4f (%+.2F)  天 %.4f (%+0.2F)\n", mb_substr($v, 0, 11, "utf-8"), $date, $txNewTime, $txNewVal, $txRate, $ttNewVal, $ttNewRate);
 
 
 
