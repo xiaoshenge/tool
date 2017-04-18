@@ -41,32 +41,46 @@ foreach ($funds as $k => $v)
 	//腾讯估值
 	$res = json_decode($curl->get($txGzUrl.$k)->body);
 
-	if (!$res->data)
+	if ($res->data)
 	{
-		continue;
+		$date = $res->data->date;
+		list($txNewTime, $txNewVal) = array_pop($res->data->data);
+		$yesterdayVal = $res->data->yesterdayDwjz;
+
+		$txRate = ($txNewVal * 10000 - $yesterdayVal*10000) / ($yesterdayVal * 10000) * 100;
+	}
+	else
+	{
+		$date = date("Y-m-d");
+		$txNewVal = '--';
+		$txRate = '--';
+		$txNewTime = date("Hi");
 	}
 
-	$date = $res->data->date;
-	list($txNewTime, $txNewVal) = array_pop($res->data->data);
-	$yesterdayVal = $res->data->yesterdayDwjz;
 
-	$txRate = ($txNewVal * 10000 - $yesterdayVal*10000) / ($yesterdayVal * 10000) * 100;
 
 	//天天基金估值
 	$res = $curl->get(sprintf($ttGzUrl, $k));
 	preg_match_all('/jsonpgz\((.*)\)/', $res->body, $match);
-	if (!$match[1][0])
+	if ($match[1][0])
 	{
-		continue;
-	}
+		$ttData = json_decode($match[1][0],true);
+		$ttNewVal = $ttData['gsz'];
+		$ttNewRate = floatval($ttData['gszzl']);
+		$ttNewTime = date("H:i", strtotime($ttData['gztime']));
 
-	$ttData = json_decode($match[1][0],true);
-	$ttNewVal = $ttData['gsz'];
-	$ttNewRate = floatval($ttData['gszzl']);
-	$ttNewTime = date("H:i", strtotime($ttData['gztime']));
+
+	}
+	else
+	{
+		$ttNewVal = '--';
+		$ttNewRate = '--';
+		$ttNewTime = '';
+	}
 
 	$txNewTime = substr($txNewTime, 0, 2) . ':' . substr($txNewTime, 2, 4);
 	$date = substr($date, 5);
+
 
 	$str .= sprintf("%s\t%s %s   腾 %.4f (%+.2F)  天 %.4f (%+0.2F)\n", mb_substr($v, 0, 11, "utf-8"), $date, $txNewTime, $txNewVal, $txRate, $ttNewVal, $ttNewRate);
 
