@@ -1,0 +1,12 @@
+{
+    "name": "root/fund",
+    "authors": [
+        {
+            "name": "xiaoshenge",
+            "email": "xiaoshengeer@gmail.com"
+        }
+    ],
+    "require": {
+        "bramus/ansi-php": "^3.0"
+    }
+}
