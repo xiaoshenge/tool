@@ -37,7 +37,7 @@ while (true) {
 			$tmp = explode("~", $v);
 			$str .= sprintf("%s:%+.2F\t", $tmp[0], $tmp[1]);
 
-			$ansi->color([SGR::COLOR_FG_BLUE])->text($tmp[0] . ": ");
+			$ansi->color([SGR::COLOR_FG_WHITE])->text($tmp[0] . ": ");
 
 			if ($tmp[1] > 0) {
 				$color = [SGR::COLOR_FG_RED];
@@ -46,7 +46,7 @@ while (true) {
 			}
 
 			$ansi->color($color)
-				->blink()
+				//->blink()
 				->text(sprintf("%+.2F", $tmp[1]))->nostyle()->text("\t");
 
 		}
@@ -68,7 +68,7 @@ while (true) {
 		if ($i % 2 == 0) {
 			$bg = SGR::COLOR_BG_WHITE_BRIGHT;
 		} else {
-			$bg = SGR::COLOR_BG_WHITE;
+			$bg = SGR::COLOR_BG_CYAN_BRIGHT;
 		}
 		//腾讯估值
 		$res = json_decode($curl->get($txGzUrl . $k)->body);
@@ -100,7 +100,7 @@ while (true) {
 		$date = substr($date, 5);
 		$str .= sprintf("%s\t%s %s   腾 %.4f (%+.2F)  天 %.4f (%+0.2F)\n", mb_substr($v, 0, 11, "utf-8"), $date, $txNewTime, $txNewVal, $txRate, $ttNewVal, $ttNewRate);
 
-		$ansi->color([SGR::COLOR_FG_BLUE, $bg])->text($v)->text("\t")->text($date . " " . $txNewTime)->text("\t")->nostyle();
+		$ansi->color([SGR::COLOR_FG_BLACK, $bg])->text($v)->text("\t")->text($date . " " . $txNewTime)->text("\t")->nostyle();
 		if ($txRate > 0) {
 			$color = [SGR::COLOR_FG_RED, $bg];
 		} else {
@@ -134,9 +134,9 @@ while (true) {
 
 	echo "已经运行 :      ";  // 5 characters of padding at the end
 	echo "\033[5D";      // Move 5 characters backward
-	echo str_pad($n * 5  . '秒', 3, ' ', STR_PAD_LEFT) . " %";    // Output is always 5 characters long
+	echo str_pad($n * 60  . '秒', 3, ' ', STR_PAD_LEFT) . " %";    // Output is always 5 characters long
 
-	sleep(5);
+	sleep(60);
 	system("clear");
 	$n++;
 
