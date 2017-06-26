@@ -108,7 +108,7 @@ while (true) {
 		}
 		$ansi->color($color)->text(sprintf('腾 %.4f (%+.2F)', $txNewVal, $txRate))->text("\t")->nostyle();
 
-		if ($txRate > 0) {
+		if ($ttNewRate > 0) {
 			$color = [SGR::COLOR_FG_RED, $bg];
 		} else {
 			$color = [SGR::COLOR_FG_GREEN, $bg];
